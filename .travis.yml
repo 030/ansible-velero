@@ -4,7 +4,7 @@ services: docker
 
 env:
   global:
-    - ROLE_NAME: rssowlnix
+    - ROLE_NAME: velero
   matrix:
     - MOLECULE_DISTRO: centos8
     - MOLECULE_DISTRO: centos7
