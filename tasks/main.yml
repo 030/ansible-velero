@@ -1,0 +1,28 @@
+---
+- name: download
+  get_url:
+    url: "{{ velero_url }}"
+    dest: "{{ velero_download }}"
+    checksum: "{{ velero_checksum }}"
+
+- block:
+    - name: unarchive
+      unarchive:
+        src: "{{ velero_download }}"
+        dest: "{{ velero_home }}"
+        remote_src: true
+        creates: "{{ velero_bin }}"
+
+    - name: executable bin for every user
+      file:
+        path: "{{ velero_bin }}"
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: symlink
+      file:
+        src: "{{ velero_bin }}"
+        dest: /usr/local/bin/velero
+        state: link
+  become: true
