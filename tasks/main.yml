@@ -8,14 +8,14 @@
 - block:
     - name: unarchive
       unarchive:
-        src: "{{ velero_download_bin }}"
+        src: "/tmp/{{ velero_pkg_ext }}"
         dest: /tmp
         remote_src: true
         creates: "{{ velero_bin }}"
 
     - name: executable bin for every user
       copy:
-        src: "{{ velero_downloaded_bin }}"
+        src: "/tmp/{{ velero_pkg_bin }}"
         dest: "{{ velero_bin }}"
         owner: root
         group: root
