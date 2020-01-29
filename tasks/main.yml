@@ -5,22 +5,6 @@
     dest: /tmp
     checksum: "{{ velero_checksum }}"
 
-- name: Check Ansible version
-  command: ansible --version
-  register: ansibleVersion
-
-- name: Print version
-  debug:
-    msg: "Ansible Version: {{ ansibleVersion.stdout }}"
-
-- name: Check tmp content
-  command: ls /tmp
-  register: tmpContent
-
-- name: Print tmp content
-  debug:
-    msg: "tmp content: {{ tmpContent.stdout }}"
-
 - block:
     - name: unarchive
       unarchive:
