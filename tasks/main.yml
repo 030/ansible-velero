@@ -17,6 +17,7 @@
       copy:
         src: "/tmp/{{ velero_pkg_bin }}"
         dest: "{{ velero_bin }}"
+        remote_src: true
         owner: root
         group: root
         mode: '0755'
