@@ -3,7 +3,7 @@
   shell: velero version --client-only | grep Version | sed -e "s|^.*v\(.*\)$|\1|"  # yamllint disable-line rule:line-length
   register: velero_installed_version
 
-  debug:
+- debug:
     msg: velero_installed_version
 
 - name: download
