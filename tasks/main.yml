@@ -5,9 +5,6 @@
   changed_when: false
   failed_when: false
 
-- debug:
-    msg: "{{ velero_installed_version }}"
-
 - block:
     - name: download
       get_url:
@@ -32,5 +29,5 @@
             mode: '0755'
       become: true
   when: >
-    velero_installed_version.stdout is defined
-    and velero_version not in velero_installed_version.stdout
+    velero_installed_version.stdout is not defined
+    or velero_version not in velero_installed_version.stdout
