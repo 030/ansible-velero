@@ -1,9 +1,17 @@
 ---
+- name: version
+  shell: velero version --client-only | grep Version | sed -e "s|^.*v\(.*\)$|\1|"
+  register: velero_installed_version
+
+  debug:
+    msg: velero_installed_version
+
 - name: download
   get_url:
     url: "{{ velero_url }}"
     dest: /tmp
     checksum: "{{ velero_checksum }}"
+  when: velero_installed_version == velero_version
 
 - block:
     - name: unarchive
@@ -22,3 +30,4 @@
         group: root
         mode: '0755'
   become: true
+  when: velero_installed_version == velero_version
