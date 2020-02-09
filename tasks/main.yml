@@ -1,7 +1,9 @@
 ---
 - name: version
-  shell: velero version --client-only | grep Version | sed -e "s|^.*v\(.*\)$|\1|"  # yamllint disable-line rule:line-length
+  command: velero version --client-only
   register: velero_installed_version
+  changed_when: false
+  failed_when: false
 
 - debug:
     msg: velero_installed_version
@@ -11,7 +13,9 @@
     url: "{{ velero_url }}"
     dest: /tmp
     checksum: "{{ velero_checksum }}"
-  when: velero_installed_version == velero_version
+  when: >
+    velero_installed_version.stdout is defined
+    and velero_version not in velero_installed_version.stdout
 
 - block:
     - name: unarchive
@@ -30,4 +34,6 @@
         group: root
         mode: '0755'
   become: true
-  when: velero_installed_version == velero_version
+  when: >
+    velero_installed_version.stdout is defined
+    and velero_version not in velero_installed_version.stdout
