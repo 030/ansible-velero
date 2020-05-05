@@ -18,7 +18,6 @@
             src: "/tmp/{{ velero_pkg_ext }}"
             dest: /tmp
             remote_src: true
-            creates: "{{ velero_bin }}"
         - name: executable bin for every user
           copy:
             src: "/tmp/{{ velero_pkg_bin }}"
