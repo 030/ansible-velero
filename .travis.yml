@@ -1,31 +1,29 @@
 ---
 language: python
-python:
-  - 3.8
+python: "3.8"
 
-services: docker
+# Use the new container infrastructure
+sudo: false
 
-env:
-  global:
-    - ROLE_NAME: ansible-velero
-  matrix:
-    - MOLECULE_DISTRO: centos8
-    - MOLECULE_DISTRO: centos7
-    - MOLECULE_DISTRO: ubuntu1804
-    - MOLECULE_DISTRO: ubuntu1604
-    - MOLECULE_DISTRO: debian10
-    - MOLECULE_DISTRO: debian9
-    - MOLECULE_DISTRO: fedora30
-
-before_install:
-  # Upgrade Docker to work with docker-py.
-  - curl https://gist.githubusercontent.com/geerlingguy/ce883ad4aec6a5f1187ef93bd338511e/raw/36612d28981d92863f839c5aefe5b7dd7193d6c6/travis-ci-docker-upgrade.sh | sudo bash  # yamllint disable-line rule:line-length
+# Install ansible
+addons:
+  apt:
+    packages:
+    - python-pip
 
 install:
-  - curl https://gist.githubusercontent.com/030/fa2454b56c525286b39d549583173d8e/raw/c9f9cf439339819958e13cad1d5b5f719217d427/ansible-ci-requirements.sh | sudo bash  # yamllint disable-line rule:line-length
+  # Install ansible
+  - pip install ansible
+
+  # Check ansible version
+  - ansible --version
+
+  # Create ansible.cfg with correct roles_path
+  - printf '[defaults]\nroles_path=../' >ansible.cfg
 
 script:
-  - molecule test
+  # Basic role syntax check
+  - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
