@@ -1,10 +1,13 @@
 ---
 language: python
+python:
+  - 3.8
+
 services: docker
 
 env:
   global:
-    - ROLE_NAME: velero
+    - ROLE_NAME: ansible-velero
   matrix:
     - MOLECULE_DISTRO: centos8
     - MOLECULE_DISTRO: centos7
@@ -16,20 +19,12 @@ env:
 
 before_install:
   # Upgrade Docker to work with docker-py.
-  - curl https://gist.githubusercontent.com/geerlingguy/ce883ad4aec6a5f1187ef93bd338511e/raw/36612d28981d92863f839c5aefe5b7dd7193d6c6/travis-ci-docker-upgrade.sh | sudo bash
+  - curl https://gist.githubusercontent.com/geerlingguy/ce883ad4aec6a5f1187ef93bd338511e/raw/36612d28981d92863f839c5aefe5b7dd7193d6c6/travis-ci-docker-upgrade.sh | sudo bash  # yamllint disable-line rule:line-length
 
 install:
-  # Install test dependencies.
-  - pip install molecule docker
-
-before_script:
-  # Use actual Ansible Galaxy role name for the project directory.
-  - cd ../
-  - mv ansible-$ROLE_NAME 030.$ROLE_NAME
-  - cd 030.$ROLE_NAME
+  - curl https://gist.githubusercontent.com/030/fa2454b56c525286b39d549583173d8e/raw/c9f9cf439339819958e13cad1d5b5f719217d427/ansible-ci-requirements.sh | sudo bash  # yamllint disable-line rule:line-length
 
 script:
-  # Run tests.
   - molecule test
 
 notifications:
