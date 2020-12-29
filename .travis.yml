@@ -6,8 +6,6 @@ python:
 services: docker
 
 env:
-  global:
-    - ROLE_NAME: ansible-velero
   matrix:
     - MOLECULE_DISTRO: centos8
     - MOLECULE_DISTRO: centos7
